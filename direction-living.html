@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zack Ballantine — Banana Bytes · I build websites in minutes</title>
-<meta name="description" content="Freelance AI web design studio. Drop a link, get a live site. Let's connect.">
+<title>Zack Ballantine — Banana Bytes · More than websites</title>
+<meta name="description" content="Designer and developer at Banana Bytes — custom sites with real craft, plus tennis and a Palm Springs guide. Let's connect.">
 
 <!-- Share preview -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Banana Bytes">
-<meta property="og:title" content="Zack Ballantine — Banana Bytes · I build websites in minutes">
-<meta property="og:description" content="Freelance AI web design studio. Drop a link, get a live site. Let's connect.">
+<meta property="og:title" content="Zack Ballantine — Banana Bytes · More than websites">
+<meta property="og:description" content="Designer and developer at Banana Bytes — custom sites with real craft, plus tennis and a Palm Springs guide. Let's connect.">
 <meta property="og:url" content="https://banana-daddy.github.io/banana-bytes-connect/direction-living.html">
 <meta property="og:image" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
 <meta property="og:image:secure_url" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
@@ -21,7 +21,7 @@
 <meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zack Ballantine — Banana Bytes">
-<meta name="twitter:description" content="I build websites in minutes. Freelance AI web design studio.">
+<meta name="twitter:description" content="Designer and developer at Banana Bytes. Custom sites, real craft — and more.">
 <meta name="twitter:image" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
 <meta name="twitter:image:alt" content="Banana Bytes neon arcade hero">
 <meta name="theme-color" content="#0B0327">
@@ -255,6 +255,11 @@ tailwind.config = {
     border: 1px solid rgba(237,231,255,0.18);
   }
 
+  /* attention pulse — Palm Springs guide */
+  @keyframes psPulse{ 0%,100%{ filter: drop-shadow(0 0 0 rgba(255,214,10,0)); } 50%{ filter: drop-shadow(0 0 14px rgba(255,214,10,.6)); } }
+  .pulse-attn{ animation: psPulse 2.1s ease-in-out infinite; border-color: rgba(255,214,10,0.5) !important; }
+  .guide-pill{ font-family:"Space Mono",monospace; font-size:0.6rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.12rem 0.5rem; border-radius:999px; color:#0B0327; background:#FFD60A; }
+
   /* focus ring */
   a:focus-visible, button:focus-visible {
     outline: 3px solid #22D3EE;
@@ -278,6 +283,7 @@ tailwind.config = {
     .live-dot { animation: none; }
     .reveal { opacity: 1; transform: none; transition: none; }
     .link-icon-float { transition: none; }
+    .pulse-attn { animation: none; }
     .links-wrap:hover .link-row,
     .links-wrap:focus-within .link-row { opacity: 1; }
   }
@@ -324,11 +330,11 @@ tailwind.config = {
     <h1 class="layer-portal relative z-[4] font-display font-extrabold leading-[0.92] tracking-tight mt-9
                text-[2.7rem] sm:text-6xl md:text-7xl">
       <span class="block text-lilac">Banana Bytes</span>
-      <span class="ink-grad block text-[1.9rem] sm:text-4xl md:text-5xl mt-2">I build websites in minutes.</span>
+      <span class="ink-grad block text-[1.9rem] sm:text-4xl md:text-5xl mt-2">More than websites.</span>
     </h1>
 
     <p class="relative z-[4] max-w-md mx-auto mt-6 text-sm sm:text-base text-lilac/75 leading-relaxed">
-      Drop me a link, get a live site back. <span class="text-cyan2">AI speed</span>, hand-finished craft.
+      My studio, Banana Bytes — custom, hand-built sites <span class="text-cyan2">(AI's a tool, not the trick)</span>. Beyond that: tennis, content, and a local Palm Springs guide.
     </p>
 
     <p class="relative z-[4] mt-3 font-mono text-[0.7rem] tracking-[0.18em] uppercase text-lilac/50">
@@ -385,9 +391,9 @@ tailwind.config = {
           <span class="ml-2 font-mono text-[0.62rem] tracking-[0.16em] uppercase text-lilac/45">banana-bytes — pipeline</span>
         </div>
         <div class="px-4 py-4 font-mono text-[0.78rem] leading-relaxed space-y-1.5">
-          <p><span class="text-cyan2">$</span> <span class="text-lilac/90">Drop a link</span> <span class="text-banana">→ live mockup in minutes</span></p>
-          <p class="text-lilac/70">Real sites. Real images. Published live.</p>
-          <p class="text-lilac/55">Web design · AI image+video · GitHub Pages → production</p>
+          <p><span class="text-cyan2">$</span> <span class="text-lilac/90">Custom design</span> <span class="text-banana">+ development — not templates</span></p>
+          <p class="text-lilac/70">Web · brand · content · local guides.</p>
+          <p class="text-lilac/55">AI in the toolkit, craft in the details.</p>
         </div>
       </div>
 
@@ -450,7 +456,7 @@ tailwind.config = {
 
         <!-- How to Palm Springs guide -->
         <a href="https://bananabytes.squarespace.com/how-to-palm-springs" target="_blank" rel="noopener"
-           class="link-row group cursor-pointer flex items-center gap-4 min-h-[56px] px-4 rounded-xl
+           class="link-row pulse-attn group cursor-pointer flex items-center gap-4 min-h-[56px] px-4 rounded-xl
                   border border-lilac/10 hover:border-banana/40">
           <span class="link-icon-float" style="color:#FFD60A" aria-hidden="true">
             <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
@@ -462,6 +468,7 @@ tailwind.config = {
             <span class="block font-display font-bold text-lilac">How to Palm Springs</span>
             <span class="block font-mono text-[0.66rem] text-lilac/45">My free local guide — perfect for visitors</span>
           </span>
+          <span class="guide-pill shrink-0">guide</span>
           <svg class="text-lilac/30 group-hover:text-banana transition-colors" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
         </a>
 
@@ -513,7 +520,7 @@ tailwind.config = {
   function saveContact(){
     const v=["BEGIN:VCARD","VERSION:3.0","N:Ballantine;Zack;;;","FN:Zack Ballantine",
     "ORG:Banana Bytes","TITLE:Solo Dev / Web Designer","EMAIL;TYPE=INTERNET:zack@zballantine.com",
-    "URL:https://instagram.com/BananaCares","NOTE:Banana Bytes — I build websites in minutes. Met at the AI conference.",
+    "URL:https://instagram.com/BananaCares","NOTE:Banana Bytes — designer and developer. Met at the AI conference.",
     "END:VCARD"].join("\r\n");
     const b=new Blob([v],{type:"text/vcard"});const u=URL.createObjectURL(b);
     const a=document.createElement("a");a.href=u;a.download="Zack-Ballantine.vcf";a.click();

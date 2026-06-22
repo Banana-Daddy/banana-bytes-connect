@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zack Ballantine — Banana Bytes · I build websites in minutes</title>
-<meta name="description" content="Freelance AI web design studio. Drop a link, get a live site. Let's connect.">
+<title>Zack Ballantine — Banana Bytes · More than websites</title>
+<meta name="description" content="Designer and developer at Banana Bytes — custom sites with real craft, plus tennis and a Palm Springs guide. Let's connect.">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Banana Bytes">
-<meta property="og:title" content="Zack Ballantine — Banana Bytes · I build websites in minutes">
-<meta property="og:description" content="Freelance AI web design studio. Drop a link, get a live site. Let's connect.">
+<meta property="og:title" content="Zack Ballantine — Banana Bytes · More than websites">
+<meta property="og:description" content="Designer and developer at Banana Bytes — custom sites with real craft, plus tennis and a Palm Springs guide. Let's connect.">
 <meta property="og:url" content="https://banana-daddy.github.io/banana-bytes-connect/direction-3d.html">
 <meta property="og:image" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
 <meta property="og:image:secure_url" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
@@ -22,7 +22,7 @@
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zack Ballantine — Banana Bytes">
-<meta name="twitter:description" content="I build websites in minutes. Freelance AI web design studio.">
+<meta name="twitter:description" content="Designer and developer at Banana Bytes. Custom sites, real craft — and more.">
 <meta name="twitter:image" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
 <meta name="twitter:image:alt" content="Banana Bytes neon arcade hero">
 <!-- Theme + icons + canonical -->
@@ -118,10 +118,16 @@
   .scroll-cue span { display:block; width:1px; height:34px; margin:0 auto;
     background:linear-gradient(#FFD60A, transparent); }
 
+  /* attention pulse — Palm Springs guide */
+  @keyframes psPulse{ 0%,100%{ filter:drop-shadow(0 0 0 rgba(255,214,10,0)); } 50%{ filter:drop-shadow(0 0 11px rgba(255,214,10,.6)); } }
+  .lnk.pulse-attn{ animation:psPulse 2.2s ease-in-out infinite; }
+  .lnk.pulse-attn .bar{ width:100%; }
+  .lnk.pulse-attn .label, .lnk.pulse-attn .idx{ color:#FFD60A; }
+
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior:auto; }
     .reveal { opacity:1 !important; transform:none !important; transition:none; }
-    .floaty { animation:none; }
+    .floaty, .lnk.pulse-attn { animation:none; }
     .lnk .bar { transition:none; }
   }
 </style>
@@ -171,7 +177,7 @@
       </p>
       <h1 class="font-display font-extrabold leading-[0.92] tracking-tight text-cream
                  text-[2.6rem] sm:text-6xl lg:text-7xl max-w-3xl">
-        I build websites<br>in minutes.
+        More than<br>websites.
       </h1>
       <p class="mt-4 max-w-md text-sm sm:text-base text-cream/65 leading-relaxed">
         I turned my 2D pixel mascot into a real 3D model.
@@ -206,15 +212,15 @@
     <p class="font-mono text-[11px] tracking-[0.28em] uppercase text-violet mb-5">Hi, I'm Zack</p>
     <p class="font-display text-2xl sm:text-3xl lg:text-[2.4rem] leading-[1.18] tracking-tight text-cream/90">
       Great to meet you — here's where to find me.
-      <span class="text-cream/55">Banana&nbsp;Bytes: drop me a link, get a live site back. AI speed, hand-finished craft.</span>
+      <span class="text-cream/55">Banana&nbsp;Bytes is my design studio — custom, hand-built sites (AI's a tool, not the trick). Beyond that: tennis, content, and a local guide to Palm Springs.</span>
     </p>
   </div>
 
   <!-- micro "what I do" — quiet mono block -->
   <div class="reveal mt-10 font-mono text-[12px] sm:text-[13px] text-cream/55 leading-loose border-l border-cream/10 pl-5 space-y-1.5">
-    <p><span class="text-banana">→</span>&nbsp; Drop a link &nbsp;→&nbsp; live mockup in minutes</p>
-    <p><span class="text-banana">→</span>&nbsp; Real sites. Real images. Published live.</p>
-    <p><span class="text-banana">→</span>&nbsp; Web design · AI image+video · GitHub Pages → production</p>
+    <p><span class="text-banana">→</span>&nbsp; Custom design and development — not templates</p>
+    <p><span class="text-banana">→</span>&nbsp; Web · brand · content · local guides</p>
+    <p><span class="text-banana">→</span>&nbsp; AI in the toolkit, craft in the details</p>
   </div>
 </section>
 
@@ -310,14 +316,14 @@
     <!-- 04 How to Palm Springs guide -->
     <li>
       <a href="https://bananabytes.squarespace.com/how-to-palm-springs" target="_blank" rel="noopener"
-         class="lnk flex items-center gap-4 sm:gap-6 py-5 border-b border-cream/10 min-h-[56px] cursor-pointer outline-none">
+         class="lnk pulse-attn flex items-center gap-4 sm:gap-6 py-5 border-b border-cream/10 min-h-[56px] cursor-pointer outline-none">
         <span class="idx font-mono text-[12px] text-cream/35 transition-colors duration-200 w-7 shrink-0">04</span>
-        <svg class="shrink-0 text-cream/70" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        <svg class="shrink-0 text-banana" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
              stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
         </svg>
         <span class="label flex-1 text-base sm:text-lg text-cream/90 transition-colors duration-200">How to Palm Springs</span>
-        <span class="font-mono text-[12px] text-cream/35 hidden sm:inline">Local guide</span>
+        <span class="font-mono text-[9px] tracking-[0.18em] uppercase text-ink bg-banana rounded-full px-2 py-0.5">guide</span>
         <span class="bar"></span>
       </a>
     </li>
@@ -367,7 +373,7 @@
 function saveContact(){
   const v=["BEGIN:VCARD","VERSION:3.0","N:Ballantine;Zack;;;","FN:Zack Ballantine",
   "ORG:Banana Bytes","TITLE:Solo Dev / Web Designer","EMAIL;TYPE=INTERNET:zack@zballantine.com",
-  "URL:https://instagram.com/BananaCares","NOTE:Banana Bytes — I build websites in minutes. Met at the AI conference.",
+  "URL:https://instagram.com/BananaCares","NOTE:Banana Bytes — designer and developer. Met at the AI conference.",
   "END:VCARD"].join("\r\n");
   const b=new Blob([v],{type:"text/vcard"});const u=URL.createObjectURL(b);
   const a=document.createElement("a");a.href=u;a.download="Zack-Ballantine.vcf";a.click();
