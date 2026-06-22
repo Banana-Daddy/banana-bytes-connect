@@ -33,6 +33,9 @@
 <link rel="apple-touch-icon" sizes="512x512" href="images/favicon-512.png">
 <link rel="canonical" href="https://banana-daddy.github.io/banana-bytes-connect/direction-arcade.html">
 
+<!-- preload the LCP hero scene -->
+<link rel="preload" as="image" href="images/arcade-scene.webp" type="image/webp" fetchpriority="high">
+
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -226,30 +229,42 @@
 <main class="relative z-10">
 
   <!-- ================= HERO ================= -->
-  <section class="relative min-h-[100svh] w-full flex items-end justify-center overflow-hidden scanlines">
+  <section class="relative min-h-[100svh] w-full flex flex-col overflow-hidden scanlines">
     <picture class="absolute inset-0 z-0">
-      <source srcset="images/arcade-hero.webp" type="image/webp">
-      <img src="images/arcade-hero.jpg"
-           alt="Synthwave arcade scene with the pixel-art Banana Bytes mascot, glowing arcade cabinets, a neon grid floor, and baked-in 'BANANA BYTES' and 'PRESS START' pixel text."
-           class="w-full h-full object-cover flicker">
+      <source srcset="images/arcade-scene.webp" type="image/webp">
+      <img src="images/arcade-scene.jpg"
+           alt="Synthwave arcade scene: the pixel-art Banana Bytes mascot holding a sunflower, glowing arcade cabinets flanking a neon grid floor, and a pixel sun."
+           class="w-full h-full object-cover flicker" fetchpriority="high" decoding="async">
     </picture>
     <div class="vignette" aria-hidden="true"></div>
 
-    <!-- bottom hook + press start prompt -->
-    <div class="relative z-10 w-full max-w-4xl mx-auto px-5 pb-12 sm:pb-16 text-center">
+    <!-- real, crisp, never-cropping title over the clean scene -->
+    <div class="relative z-10 w-full px-5 pt-[15vh] sm:pt-[13vh] text-center">
+      <p class="font-press text-banana leading-[1.45] text-[clamp(2rem,11vw,4.25rem)]"
+         style="text-shadow:4px 4px 0 #FF2E97, 8px 8px 0 #0c0518;">
+        BANANA<br>BYTES
+      </p>
+      <p class="font-press text-cyan-300 blink mt-7 text-[clamp(0.7rem,3.4vw,1.05rem)]"
+         style="text-shadow:0 0 10px rgba(34,211,238,.75), 2px 2px 0 #0c0518;" aria-hidden="true">
+        PRESS&nbsp;START
+      </p>
+    </div>
+
+    <!-- bottom hook + CTA -->
+    <div class="relative z-10 mt-auto w-full max-w-4xl mx-auto px-5 pb-12 sm:pb-16 text-center">
       <p class="font-press text-[9px] sm:text-[11px] text-cyan-300 mb-4" style="text-shadow:0 0 10px rgba(34,211,238,.6);">
         FOUNDER · BANANA BYTES
       </p>
       <p class="text-base sm:text-xl font-medium text-cream max-w-2xl mx-auto mb-7"
-         style="color:var(--cream); text-shadow:0 2px 14px rgba(0,0,0,.85);">
+         style="color:var(--cream); text-shadow:0 2px 14px rgba(0,0,0,.9);">
         Great to meet you — here's where to find me.
       </p>
       <a href="#screen"
          class="inline-flex items-center gap-3 font-press text-[11px] sm:text-sm px-6 py-4 rounded-lg btn-arcade min-h-[44px] cursor-pointer"
          style="background:var(--banana); color:#160A24;"
-         aria-label="Press start — scroll to the introduction">
+         aria-label="Enter — scroll to the introduction">
         <span aria-hidden="true">▶</span>
-        <span class="blink">PRESS&nbsp;START</span>
+        <span>ENTER</span>
       </a>
     </div>
   </section>
@@ -320,8 +335,8 @@
         </div>
 
         <!-- micro what-I-do terminal strip -->
-        <div class="mt-9 inline-block text-left font-mono text-[11px] sm:text-xs leading-relaxed px-4 py-3 rounded-md"
-             style="background:rgba(10,4,20,.8); border:1px solid rgba(34,211,238,.3); color:var(--cyan);">
+        <div class="mt-9 inline-block max-w-full text-left font-mono text-[10px] sm:text-xs leading-relaxed px-4 py-3 rounded-md"
+             style="background:rgba(10,4,20,.8); border:1px solid rgba(34,211,238,.3); color:var(--cyan); overflow-wrap:anywhere;">
           <span style="color:var(--pink);">&gt;</span> Drop a link → live mockup in minutes<br>
           <span style="color:var(--pink);">&gt;</span> Real sites. Real images. Published live.<br>
           <span style="color:var(--pink);">&gt;</span> Web design · AI image+video · GitHub Pages → production

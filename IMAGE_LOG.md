@@ -41,6 +41,12 @@ Source art: `IMG_3035.JPG` — Zack's pixel-art ServingBanana mascot (uploaded t
 ### #6 — image background removal (char) — failed → done locally
 - `remove_background(image)` returned **MCP connection lost**; recovered with a local PIL border flood-fill cutout. No cost.
 
+### #7 — arcade-scene (Nano Banana · text removal edit) ✓ USED
+- **Job**: `01cfd359-90de-4a8e-b2c1-586442712ec1` | **Model**: `nano_banana_2` @2K, 16:9, edit of #3
+- **Slot**: Arcade hero background (audit pass) — text-free synthwave scene so the "BANANA BYTES" title renders as **real Press Start 2P text** (crisp + never crops on mobile/desktop). The baked-title `arcade-hero` stays as the selector thumbnail + OG card.
+- **Prompt**: "Remove all the text… keep the sun, cyan grid, arcade cabinets, mascot, scanlines… clean text-free synthwave arcade background."
+- **Status: ✓** (fixed the cropped-title hero from the Zack review)
+
 ---
 
 ## Totals
