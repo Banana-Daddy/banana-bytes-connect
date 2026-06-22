@@ -7,13 +7,15 @@ This is a personal/brand link page, not a business-facts page, so accuracy revie
 - **Instagram**: `https://instagram.com/BananaCares` ✓ (Banana Bytes handle, per project CLAUDE.md footer)
 - **GitHub**: `https://github.com/Banana-Daddy` ✓ (the publishing account)
 - **Tennis Linktree**: `https://linktr.ee/ServingBanana` ✓ (Zack's existing link, provided in-thread)
+- **How to Palm Springs guide**: `https://bananabytes.squarespace.com/how-to-palm-springs` ✓ (provided by Zack — added to all 4 directions as a real link, "perfect for visitors")
+- **Role**: "Solo dev" (Zack's preferred self-description; replaced "Founder" everywhere per his note)
 - **Mascot / brand identity**: pixel ServingBanana mascot — supplied by Zack as the art file.
 
-## Flagged for Zack — confirm or send the URL (built as safe, inert "soon" placeholders, NOT dead taps)
-- **LinkedIn** — no URL on file. Placeholder. Send it and it's a 60-second REFIT swap.
-- **X / Twitter** — no handle on file. Placeholder.
-- **Banana Bytes website** — no canonical URL on file. Placeholder.
-- **Positioning line** — I wrote "I build websites in minutes" + "drop me a link, get a live site back." Confirm the wording or give me your preferred one-liner.
+## Removed per Zack (does not have / does not plan to have)
+- **LinkedIn** and **X / Twitter** tiles removed from all 4 directions — Zack confirmed he has neither.
+
+## Flagged for Zack — optional follow-ups
+- **Banana Bytes website** — no canonical URL on file; kept as a single inert "soon" placeholder. Send it to wire up.
 - **Conference name** — left generic ("the AI conference") in the vCard note; tell me the event and I'll personalize.
 
 ## Mascot — kept original (Zack's call)
