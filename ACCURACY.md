@@ -16,6 +16,11 @@ This is a personal/brand link page, not a business-facts page, so accuracy revie
 - **Positioning line** — I wrote "I build websites in minutes" + "drop me a link, get a live site back." Confirm the wording or give me your preferred one-liner.
 - **Conference name** — left generic ("the AI conference") in the vCard note; tell me the event and I'll personalize.
 
+## Mascot — kept original (Zack's call)
+- An early "no hair" note prompted a bald re-edit of the mascot + re-derived video/3D. On review, the bald edit also
+  removed Zack's eyebrows and he preferred the **original ServingBanana art**. **All assets reverted to the original
+  mascot** (hair + eyebrows intact). Bald source kept locally as `mascot-bald-sprite.png` (not published).
+
 ## Fixed / decided during build
 - Placeholder links are inert (`aria-disabled`, `preventDefault`, "soon" pill) so none read as broken if tapped live.
 - "Save my contact" generates a real `.vcf` (vCard) on the fly — name, studio, title, email, IG, note.
