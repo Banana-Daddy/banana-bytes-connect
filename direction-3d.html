@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zack Ballantine — Banana Bytes · I build websites in minutes</title>
+<meta name="description" content="Freelance AI web design studio. Drop a link, get a live site. Let's connect.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Banana Bytes">
+<meta property="og:title" content="Zack Ballantine — Banana Bytes · I build websites in minutes">
+<meta property="og:description" content="Freelance AI web design studio. Drop a link, get a live site. Let's connect.">
+<meta property="og:url" content="https://banana-daddy.github.io/banana-bytes-connect/direction-3d.html">
+<meta property="og:image" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
+<meta property="og:image:secure_url" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Banana Bytes — pixel-art banana mascot in a neon synthwave arcade scene">
+<meta property="og:locale" content="en_US">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zack Ballantine — Banana Bytes">
+<meta name="twitter:description" content="I build websites in minutes. Freelance AI web design studio.">
+<meta name="twitter:image" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
+<meta name="twitter:image:alt" content="Banana Bytes neon arcade hero">
+<!-- Theme + icons + canonical -->
+<meta name="theme-color" content="#060507">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" sizes="512x512" href="images/favicon-512.png">
+<link rel="canonical" href="https://banana-daddy.github.io/banana-bytes-connect/direction-3d.html">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink:    '#060507',
+          banana: '#FFD60A',
+          violet: '#7C5CFF',
+          cream:  '#F2EEE9',
+        },
+        fontFamily: {
+          display: ['"Bricolage Grotesque"', 'sans-serif'],
+          mono:    ['"Space Mono"', 'monospace'],
+        },
+      }
+    }
+  }
+</script>
+
+<style>
+  :root { color-scheme: dark; }
+  html, body { background:#060507; }
+  body {
+    font-family:'Bricolage Grotesque', sans-serif;
+    color:#F2EEE9;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+
+  /* Focus ring — visible, brand-colored */
+  a:focus-visible, button:focus-visible, [tabindex]:focus-visible, model-viewer:focus-visible {
+    outline:2px solid #FFD60A;
+    outline-offset:3px;
+    border-radius:4px;
+  }
+
+  /* model-viewer sizing */
+  model-viewer {
+    width:100%;
+    height:100%;
+    --poster-color:transparent;
+    background:transparent;
+    --progress-bar-color:#FFD60A;
+  }
+  model-viewer::part(default-progress-bar){ display:none; }
+
+  /* Subtle stage glow behind mascot */
+  .stage-glow {
+    position:absolute; inset:0;
+    background:
+      radial-gradient(46% 38% at 50% 52%, rgba(124,92,255,0.28), transparent 70%),
+      radial-gradient(34% 30% at 50% 60%, rgba(255,214,10,0.14), transparent 72%);
+    pointer-events:none;
+  }
+  .grain {
+    position:absolute; inset:0; pointer-events:none; opacity:0.05; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Reveal animation (additive — content visible by default) */
+  .reveal { opacity:0; transform:translateY(18px); transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity:1; transform:none; }
+
+  /* Link list — banana underline grows on hover/focus */
+  .lnk { position:relative; }
+  .lnk .bar {
+    position:absolute; left:0; bottom:-2px; height:2px; width:0;
+    background:#FFD60A; transition:width .42s cubic-bezier(.2,.7,.2,1);
+  }
+  .lnk:hover .bar, .lnk:focus-visible .bar, .lnk:focus-within .bar { width:100%; }
+  .lnk:hover .idx, .lnk:focus-within .idx { color:#FFD60A; }
+  .lnk:hover .label, .lnk:focus-within .label { color:#FFFFFF; }
+  .lnk[aria-disabled="true"]:hover .bar { width:0; }
+  .lnk[aria-disabled="true"] { cursor:not-allowed; }
+
+  /* drag hint pill pulse */
+  @keyframes floaty { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-6px); } }
+  .floaty { animation:floaty 3.2s ease-in-out infinite; }
+
+  .scroll-cue span { display:block; width:1px; height:34px; margin:0 auto;
+    background:linear-gradient(#FFD60A, transparent); }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior:auto; }
+    .reveal { opacity:1 !important; transform:none !important; transition:none; }
+    .floaty { animation:none; }
+    .lnk .bar { transition:none; }
+  }
+</style>
+</head>
+
+<body>
+
+<!-- ============ HERO STAGE: pinned 3D mascot + tall scroll spacer ============ -->
+<section id="stage-section" class="relative" style="height:250vh;">
+  <div id="stage" class="sticky top-0 h-screen w-full overflow-hidden flex flex-col">
+    <div class="stage-glow"></div>
+
+    <!-- top eyebrow bar -->
+    <header class="relative z-20 px-6 sm:px-10 pt-6 flex items-center justify-between">
+      <span class="font-mono text-[11px] tracking-[0.28em] uppercase text-cream/55">Banana&nbsp;Bytes</span>
+      <span class="font-mono text-[11px] tracking-[0.28em] uppercase text-cream/40">@ServingBanana</span>
+    </header>
+
+    <!-- the model fills the stage -->
+    <div class="relative z-10 flex-1 w-full">
+      <model-viewer
+        id="mascot"
+        src="images/mascot-opt.glb"
+        poster="images/mascot-poster.jpg"
+        alt="3D model of the Banana Bytes pixel-art banana mascot holding a sunflower — drag to spin it"
+        camera-controls
+        disable-zoom
+        auto-rotate
+        interaction-prompt="none"
+        shadow-intensity="1"
+        exposure="1"
+        camera-orbit="0deg 80deg 105%"
+        min-camera-orbit="auto 60deg 105%"
+        max-camera-orbit="auto 95deg 105%"
+        loading="eager">
+        <!-- no-WebGL fallback -->
+        <img slot="poster" src="images/mascot-poster.jpg"
+             alt="Banana Bytes pixel-art mascot holding a sunflower"
+             style="width:100%;height:100%;object-fit:contain;">
+      </model-viewer>
+    </div>
+
+    <!-- headline + caption pinned bottom -->
+    <div class="relative z-20 px-6 sm:px-10 pb-9 sm:pb-12 pointer-events-none">
+      <p class="font-mono text-[11px] tracking-[0.28em] uppercase text-banana/80 mb-3">
+        Founder · Banana Bytes
+      </p>
+      <h1 class="font-display font-extrabold leading-[0.92] tracking-tight text-cream
+                 text-[2.6rem] sm:text-6xl lg:text-7xl max-w-3xl">
+        I build websites<br>in minutes.
+      </h1>
+      <p class="mt-4 max-w-md text-sm sm:text-base text-cream/65 leading-relaxed">
+        I turned my 2D pixel mascot into a real 3D model.
+        <span class="text-cream/90 font-semibold">Spin it.</span>
+      </p>
+    </div>
+
+    <!-- drag hint pill (interactive) -->
+    <div class="absolute z-20 top-1/2 right-6 sm:right-10 -translate-y-1/2 floaty pointer-events-none">
+      <span class="font-mono text-[10px] tracking-[0.22em] uppercase text-cream/55
+                   border border-cream/15 rounded-full px-3 py-1.5 backdrop-blur-sm bg-ink/30 inline-flex items-center gap-2">
+        <!-- drag/move icon (Lucide-style) -->
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFD60A" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/>
+        </svg>
+        drag · scroll to spin
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- scroll cue (only meaningful before scroll, sits just under hero) -->
+<div class="reveal flex flex-col items-center gap-3 pt-2 pb-10 text-cream/45" aria-hidden="true">
+  <span class="font-mono text-[10px] tracking-[0.3em] uppercase">keep going</span>
+  <span class="scroll-cue"><span></span></span>
+</div>
+
+<!-- ============ INTRO / NICE TO MEET YOU ============ -->
+<section class="px-6 sm:px-10 max-w-3xl mx-auto pb-16 sm:pb-24">
+  <div class="reveal">
+    <p class="font-mono text-[11px] tracking-[0.28em] uppercase text-violet mb-5">Hi, I'm Zack</p>
+    <p class="font-display text-2xl sm:text-3xl lg:text-[2.4rem] leading-[1.18] tracking-tight text-cream/90">
+      Great to meet you — here's where to find me.
+      <span class="text-cream/55">Banana&nbsp;Bytes: drop me a link, get a live site back. AI speed, hand-finished craft.</span>
+    </p>
+  </div>
+
+  <!-- micro "what I do" — quiet mono block -->
+  <div class="reveal mt-10 font-mono text-[12px] sm:text-[13px] text-cream/55 leading-loose border-l border-cream/10 pl-5 space-y-1.5">
+    <p><span class="text-banana">→</span>&nbsp; Drop a link &nbsp;→&nbsp; live mockup in minutes</p>
+    <p><span class="text-banana">→</span>&nbsp; Real sites. Real images. Published live.</p>
+    <p><span class="text-banana">→</span>&nbsp; Web design · AI image+video · GitHub Pages → production</p>
+  </div>
+</section>
+
+<!-- ============ LINKS — minimal vertical list ============ -->
+<section class="px-6 sm:px-10 max-w-3xl mx-auto pb-12" aria-labelledby="links-heading">
+  <h2 id="links-heading" class="reveal font-mono text-[11px] tracking-[0.28em] uppercase text-cream/45 mb-2">
+    Connect
+  </h2>
+
+  <!-- Primary actions: Email + Save contact -->
+  <div class="reveal grid sm:grid-cols-2 gap-3 mb-9 mt-5">
+    <a href="mailto:zack@zballantine.com?subject=Let%27s%20build%20something"
+       class="group min-h-[56px] flex items-center justify-between gap-4 rounded-xl px-5 py-4
+              bg-banana text-ink font-semibold cursor-pointer
+              transition-colors duration-200 hover:bg-[#ffdf3a] focus-visible:bg-[#ffdf3a]">
+      <span class="flex items-center gap-3">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/>
+        </svg>
+        Email me
+      </span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+           class="opacity-60 transition-transform duration-200 group-hover:translate-x-0.5">
+        <path d="M5 12h14M13 6l6 6-6 6"/>
+      </svg>
+    </a>
+
+    <button type="button" onclick="saveContact()"
+       class="group min-h-[56px] flex items-center justify-between gap-4 rounded-xl px-5 py-4
+              border border-cream/15 text-cream font-semibold cursor-pointer
+              transition-colors duration-200 hover:border-banana/70 hover:text-white
+              focus-visible:border-banana">
+      <span class="flex items-center gap-3">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFD60A" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+        </svg>
+        Save my contact
+      </span>
+      <span class="font-mono text-[10px] tracking-wider uppercase text-cream/40">.vcf</span>
+    </button>
+  </div>
+
+  <!-- Vertical link list -->
+  <ul class="border-t border-cream/10" role="list">
+
+    <!-- 01 Instagram -->
+    <li>
+      <a href="https://instagram.com/BananaCares" target="_blank" rel="noopener"
+         class="lnk flex items-center gap-4 sm:gap-6 py-5 border-b border-cream/10 min-h-[56px] cursor-pointer outline-none">
+        <span class="idx font-mono text-[12px] text-cream/35 transition-colors duration-200 w-7 shrink-0">01</span>
+        <svg class="shrink-0 text-cream/70" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 1.62c-3.15 0-3.5.01-4.74.07-1.14.05-1.76.24-2.17.4-.55.21-.94.47-1.35.88-.41.41-.67.8-.88 1.35-.16.41-.35 1.03-.4 2.17-.06 1.24-.07 1.59-.07 4.74s.01 3.5.07 4.74c.05 1.14.24 1.76.4 2.17.21.55.47.94.88 1.35.41.41.8.67 1.35.88.41.16 1.03.35 2.17.4 1.24.06 1.59.07 4.74.07s3.5-.01 4.74-.07c1.14-.05 1.76-.24 2.17-.4.55-.21.94-.47 1.35-.88.41-.41.67-.8.88-1.35.16-.41.35-1.03.4-2.17.06-1.24.07-1.59.07-4.74s-.01-3.5-.07-4.74c-.05-1.14-.24-1.76-.4-2.17a3.6 3.6 0 0 0-.88-1.35 3.6 3.6 0 0 0-1.35-.88c-.41-.16-1.03-.35-2.17-.4-1.24-.06-1.59-.07-4.74-.07Zm0 4.32a3.9 3.9 0 1 0 0 7.8 3.9 3.9 0 0 0 0-7.8Zm0 6.43a2.53 2.53 0 1 1 0-5.06 2.53 2.53 0 0 1 0 5.06Zm4.97-6.6a.91.91 0 1 1-1.82 0 .91.91 0 0 1 1.82 0Z"/>
+        </svg>
+        <span class="label flex-1 text-base sm:text-lg text-cream/90 transition-colors duration-200">Instagram</span>
+        <span class="font-mono text-[12px] text-cream/35 hidden sm:inline">@BananaCares</span>
+        <span class="bar"></span>
+      </a>
+    </li>
+
+    <!-- 02 GitHub -->
+    <li>
+      <a href="https://github.com/Banana-Daddy" target="_blank" rel="noopener"
+         class="lnk flex items-center gap-4 sm:gap-6 py-5 border-b border-cream/10 min-h-[56px] cursor-pointer outline-none">
+        <span class="idx font-mono text-[12px] text-cream/35 transition-colors duration-200 w-7 shrink-0">02</span>
+        <svg class="shrink-0 text-cream/70" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M12 .5C5.37.5 0 5.87 0 12.5c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58 0-.29-.01-1.04-.02-2.05-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.33-1.76-1.33-1.76-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.37.81 1.1.81 2.22 0 1.6-.01 2.9-.01 3.29 0 .32.21.7.82.58A12 12 0 0 0 24 12.5C24 5.87 18.63.5 12 .5Z"/>
+        </svg>
+        <span class="label flex-1 text-base sm:text-lg text-cream/90 transition-colors duration-200">GitHub</span>
+        <span class="font-mono text-[12px] text-cream/35 hidden sm:inline">Banana-Daddy</span>
+        <span class="bar"></span>
+      </a>
+    </li>
+
+    <!-- 03 Linktree -->
+    <li>
+      <a href="https://linktr.ee/ServingBanana" target="_blank" rel="noopener"
+         class="lnk flex items-center gap-4 sm:gap-6 py-5 border-b border-cream/10 min-h-[56px] cursor-pointer outline-none">
+        <span class="idx font-mono text-[12px] text-cream/35 transition-colors duration-200 w-7 shrink-0">03</span>
+        <svg class="shrink-0 text-cream/70" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+        <span class="label flex-1 text-base sm:text-lg text-cream/90 transition-colors duration-200">My tennis life</span>
+        <span class="font-mono text-[12px] text-cream/35 hidden sm:inline">Linktree</span>
+        <span class="bar"></span>
+      </a>
+    </li>
+
+    <!-- 04 LinkedIn — placeholder -->
+    <li>
+      <a href="#" data-needs-url="1" aria-disabled="true" onclick="event.preventDefault()"
+         class="lnk flex items-center gap-4 sm:gap-6 py-5 border-b border-cream/10 min-h-[56px] outline-none">
+        <span class="idx font-mono text-[12px] text-cream/25 w-7 shrink-0">04</span>
+        <svg class="shrink-0 text-cream/30" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13ZM7.12 20.45H3.55V9h3.57v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.22.79 24 1.77 24h20.45c.98 0 1.78-.78 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z"/>
+        </svg>
+        <span class="label flex-1 text-base sm:text-lg text-cream/40">LinkedIn</span>
+        <span class="font-mono text-[9px] tracking-[0.18em] uppercase text-violet/80 border border-violet/30 rounded-full px-2 py-0.5">soon</span>
+        <span class="bar"></span>
+      </a>
+    </li>
+
+    <!-- 05 X / Twitter — placeholder -->
+    <li>
+      <a href="#" data-needs-url="1" aria-disabled="true" onclick="event.preventDefault()"
+         class="lnk flex items-center gap-4 sm:gap-6 py-5 border-b border-cream/10 min-h-[56px] outline-none">
+        <span class="idx font-mono text-[12px] text-cream/25 w-7 shrink-0">05</span>
+        <svg class="shrink-0 text-cream/30" width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M18.9 1.15h3.68l-8.04 9.19L24 22.85h-7.41l-5.8-7.58-6.64 7.58H.46l8.6-9.83L0 1.15h7.6l5.24 6.93 6.06-6.93Zm-1.29 19.5h2.04L6.49 3.24H4.3L17.61 20.65Z"/>
+        </svg>
+        <span class="label flex-1 text-base sm:text-lg text-cream/40">X / Twitter</span>
+        <span class="font-mono text-[9px] tracking-[0.18em] uppercase text-violet/80 border border-violet/30 rounded-full px-2 py-0.5">soon</span>
+        <span class="bar"></span>
+      </a>
+    </li>
+
+    <!-- 06 Banana Bytes site — placeholder -->
+    <li>
+      <a href="#" data-needs-url="1" aria-disabled="true" onclick="event.preventDefault()"
+         class="lnk flex items-center gap-4 sm:gap-6 py-5 border-b border-cream/10 min-h-[56px] outline-none">
+        <span class="idx font-mono text-[12px] text-cream/25 w-7 shrink-0">06</span>
+        <svg class="shrink-0 text-cream/30" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/>
+        </svg>
+        <span class="label flex-1 text-base sm:text-lg text-cream/40">Banana Bytes site</span>
+        <span class="font-mono text-[9px] tracking-[0.18em] uppercase text-violet/80 border border-violet/30 rounded-full px-2 py-0.5">soon</span>
+        <span class="bar"></span>
+      </a>
+    </li>
+  </ul>
+</section>
+
+<!-- ============ SIGN-OFF avatar ============ -->
+<section class="px-6 sm:px-10 max-w-3xl mx-auto pb-20 pt-6">
+  <div class="reveal flex items-center gap-4">
+    <img src="images/mascot-avatar.png" alt="Pixel-art portrait of Zack's Banana Bytes mascot holding a sunflower"
+         width="56" height="56" loading="lazy"
+         class="w-14 h-14 rounded-full object-cover ring-1 ring-cream/15">
+    <div>
+      <p class="font-display font-semibold text-cream/90">Zack Ballantine</p>
+      <p class="font-mono text-[11px] tracking-wider text-cream/45">Founder · Banana Bytes · @ServingBanana</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ Banana Bytes footer (last element) ============ -->
+<div style="text-align:center; padding:1.5rem 1rem; font-size:0.7rem; letter-spacing:0.05em; opacity:0.45;">
+  <a href="https://instagram.com/BananaCares" target="_blank" rel="noopener" style="text-decoration:none; color:inherit;">
+    Mockup created by Banana Bytes
+  </a>
+</div>
+
+<!-- model-viewer CDN -->
+<script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
+
+<script>
+// ---- vCard save ----
+function saveContact(){
+  const v=["BEGIN:VCARD","VERSION:3.0","N:Ballantine;Zack;;;","FN:Zack Ballantine",
+  "ORG:Banana Bytes","TITLE:Founder / Web Designer","EMAIL;TYPE=INTERNET:zack@zballantine.com",
+  "URL:https://instagram.com/BananaCares","NOTE:Banana Bytes — I build websites in minutes. Met at the AI conference.",
+  "END:VCARD"].join("\r\n");
+  const b=new Blob([v],{type:"text/vcard"});const u=URL.createObjectURL(b);
+  const a=document.createElement("a");a.href=u;a.download="Zack-Ballantine.vcf";a.click();
+  setTimeout(()=>URL.revokeObjectURL(u),1500);
+}
+
+// ---- reduced-motion check ----
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---- scroll-driven camera orbit (signature move) ----
+(function(){
+  const mv = document.getElementById('mascot');
+  const stage = document.getElementById('stage-section');
+  if(!mv || !stage) return;
+
+  if(reduce){
+    // static: never auto-rotate. Keep the sharp pixel poster as the resting
+    // image so motion-sensitive visitors get a still frame, not a live model.
+    mv.removeAttribute('auto-rotate');
+    mv.setAttribute('reveal','manual');     // poster stays unless user opts in
+    mv.setAttribute('camera-orbit','15deg 80deg 105%');
+    return;
+  }
+
+  let ticking = false;
+  function update(){
+    ticking = false;
+    const rect = stage.getBoundingClientRect();
+    const total = stage.offsetHeight - window.innerHeight;
+    // progress 0 → 1 across the tall spacer
+    let p = total > 0 ? (-rect.top) / total : 0;
+    p = Math.min(1, Math.max(0, p));
+    // turn the mascot ~520deg over the scroll, gentle vertical settle
+    const theta = p * 520;
+    const phi = 80 - p * 8;   // 80 → 72
+    mv.cameraOrbit = `${theta}deg ${phi}deg 105%`;
+  }
+  function onScroll(){
+    if(!ticking){ ticking = true; requestAnimationFrame(update); }
+  }
+  // While the user actively drags the model, pause scroll-control briefly
+  // so manual spin isn't fought by the scroll handler.
+  let dragging = false, releaseTimer;
+  // Only a genuine drag flips the guard; scroll-driven cameraOrbit writes
+  // fire camera-change with a non-user source and are ignored here.
+  mv.addEventListener('camera-change', (e)=>{
+    if(e.detail && e.detail.source === 'user-interaction'){
+      dragging = true;
+      clearTimeout(releaseTimer);
+      releaseTimer = setTimeout(()=>{ dragging = false; }, 1400);
+    }
+  });
+  const guardedScroll = ()=>{ if(!dragging) onScroll(); };
+  window.addEventListener('scroll', guardedScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  update();
+})();
+
+// ---- IntersectionObserver reveal (additive only) ----
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  if(reduce || !('IntersectionObserver' in window)){
+    els.forEach(el=>el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{
+      if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+  els.forEach(el=>io.observe(el));
+})();
+</script>
+</body>
+</html>

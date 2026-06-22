@@ -1,0 +1,8 @@
+# heavy raw intermediates / unreferenced working files (kept locally, not published)
+images/*-raw.png
+images/*-raw.mp4
+images/mascot-bald-sprite.png
+images/char-render.png
+images/mascot.glb
+images/mascot-alpha.webm
+.DS_Store

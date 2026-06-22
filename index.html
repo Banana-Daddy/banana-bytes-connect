@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Banana Bytes — Zack Ballantine · Pick a vibe</title>
+<meta name="description" content="Four ways to meet Zack Ballantine of Banana Bytes — arcade, glass, 3D, and living-synthwave takes on one link page. I build websites in minutes.">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Banana Bytes">
+<meta property="og:title" content="Zack Ballantine — Banana Bytes · I build websites in minutes">
+<meta property="og:description" content="Freelance AI web design studio. Drop a link, get a live site. Let's connect.">
+<meta property="og:url" content="https://banana-daddy.github.io/banana-bytes-connect/">
+<meta property="og:image" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
+<meta property="og:image:secure_url" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Banana Bytes — pixel-art banana mascot in a neon synthwave arcade scene with the title BANANA BYTES">
+<meta property="og:locale" content="en_US">
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Zack Ballantine — Banana Bytes">
+<meta name="twitter:description" content="I build websites in minutes. Freelance AI web design studio.">
+<meta name="twitter:image" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
+<meta name="twitter:image:alt" content="Banana Bytes neon arcade hero">
+<!-- Theme + icons + canonical -->
+<meta name="theme-color" content="#160A24">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" sizes="512x512" href="images/favicon-512.png">
+<link rel="canonical" href="https://banana-daddy.github.io/banana-bytes-connect/">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = { theme: { extend: {
+    colors: { ink:'#160A24', deep:'#2A0E4F', hotpink:'#FF2E97', banana:'#FFD60A', cyan:'#22D3EE', cream:'#FFF7E6' },
+    fontFamily: { pixel:['"Press Start 2P"','monospace'], grotesk:['"Space Grotesk"','sans-serif'] }
+  } } }
+</script>
+<style>
+  :root{ color-scheme:dark; }
+  html,body{ background:#0E0720; }
+  body{ font-family:'Space Grotesk',sans-serif; color:#FFF7E6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  a:focus-visible,button:focus-visible{ outline:2px solid #FFD60A; outline-offset:3px; border-radius:6px; }
+
+  /* synthwave backdrop */
+  .bg-grid{ position:fixed; inset:0; z-index:-2; background:
+      radial-gradient(120% 80% at 50% -10%, #3A1170 0%, #1B0A38 45%, #0E0720 100%); }
+  .bg-floor{ position:fixed; left:50%; bottom:-6vh; transform:translateX(-50%); z-index:-1;
+      width:240vw; height:55vh;
+      background-image:linear-gradient(#22D3EE55 1px,transparent 1px),linear-gradient(90deg,#22D3EE55 1px,transparent 1px);
+      background-size:5vw 5vw; opacity:.5;
+      -webkit-mask-image:linear-gradient(#000,transparent 78%); mask-image:linear-gradient(#000,transparent 78%);
+      transform-origin:50% 0; transform:translateX(-50%) perspective(40vh) rotateX(68deg);
+      animation:floor 7s linear infinite; }
+  @keyframes floor{ to{ background-position:0 5vw; } }
+  .sun{ position:fixed; z-index:-1; left:50%; top:10vh; transform:translateX(-50%);
+      width:min(62vw,420px); aspect-ratio:1; border-radius:50%;
+      background:radial-gradient(circle at 50% 40%, #FFD60A, #FF7AC6 55%, #B5179E 78%, transparent 80%);
+      filter:blur(2px); opacity:.32; }
+
+  .blink{ animation:blink 1.1s steps(1,end) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .tile{ transition:transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s ease, border-color .25s ease; }
+  .tile:hover,.tile:focus-within{ transform:translateY(-6px); border-color:var(--ac); box-shadow:0 0 0 1px var(--ac), 0 18px 50px -12px var(--ac); }
+  .tile .enter{ opacity:0; transform:translateX(-4px); transition:.25s ease; }
+  .tile:hover .enter,.tile:focus-within .enter{ opacity:1; transform:none; }
+  .tile .thumb{ transition:transform .4s ease; }
+  .tile:hover .thumb img,.tile:hover .thumb video{ transform:scale(1.05); }
+  .scan{ background:repeating-linear-gradient(180deg,transparent 0 2px,rgba(0,0,0,.22) 2px 3px); }
+
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:none; }
+
+  @media (prefers-reduced-motion: reduce){
+    .bg-floor{ animation:none; } .blink{ animation:none; }
+    .reveal{ opacity:1!important; transform:none!important; transition:none; }
+    .tile{ transition:none; }
+  }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="sun"></div><div class="bg-floor"></div>
+
+<!-- visually-hidden real h1 -->
+<h1 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">
+  Banana Bytes — Zack Ballantine. I build websites in minutes. Pick a version of my link page.
+</h1>
+
+<main class="max-w-6xl mx-auto px-5 sm:px-8 pt-12 sm:pt-16 pb-10">
+
+  <!-- header -->
+  <header class="text-center reveal">
+    <p class="font-pixel text-[10px] sm:text-xs text-cyan tracking-widest mb-5">BANANA&nbsp;BYTES&nbsp;·&nbsp;INSERT&nbsp;COIN</p>
+    <h2 class="font-pixel text-banana leading-[1.5] text-2xl sm:text-4xl lg:text-5xl"
+        style="text-shadow:3px 3px 0 #FF2E97,6px 6px 0 rgba(0,0,0,.35)">SELECT&nbsp;A&nbsp;VIBE</h2>
+    <p class="mt-7 max-w-xl mx-auto text-cream/75 text-sm sm:text-base leading-relaxed">
+      Four takes on my link page — same Zack, four moods. Tap one to play.
+      <span class="block mt-1 text-cream/45">Banana Bytes · I build websites in minutes.</span>
+    </p>
+    <p class="font-pixel text-[9px] text-hotpink mt-6 blink">▶ PRESS START</p>
+  </header>
+
+  <!-- tiles -->
+  <section class="mt-12 sm:mt-16 grid gap-5 sm:gap-6 sm:grid-cols-2" aria-label="Choose a direction">
+
+    <!-- ARCADE -->
+    <a href="direction-arcade.html" class="tile reveal group block rounded-2xl border border-white/12 bg-black/30 overflow-hidden cursor-pointer" style="--ac:#FF2E97">
+      <div class="thumb relative h-44 sm:h-52 overflow-hidden">
+        <img src="images/arcade-hero.webp" alt="Arcade direction preview — neon synthwave scene with pixel BANANA BYTES title" loading="lazy" class="w-full h-full object-cover">
+        <div class="absolute inset-0 scan opacity-40"></div>
+        <span class="absolute top-3 left-3 font-pixel text-[8px] text-cyan bg-black/55 px-2 py-1 rounded">01</span>
+      </div>
+      <div class="p-5 sm:p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-pixel text-[13px] text-banana">ARCADE</h3>
+          <span class="enter font-pixel text-[9px] text-hotpink">ENTER&nbsp;▶</span>
+        </div>
+        <p class="mt-3 text-sm text-cream/70 leading-relaxed">Insert-coin maximalism. CRT cabinet, scanlines, and the mascot alive on screen.</p>
+        <p class="mt-3 text-[11px] text-cream/40">Pro-Max · retro-arcade</p>
+      </div>
+    </a>
+
+    <!-- GLASS -->
+    <a href="direction-glass.html" class="tile reveal group block rounded-2xl border border-white/12 bg-black/30 overflow-hidden cursor-pointer" style="--ac:#22D3EE">
+      <div class="thumb relative h-44 sm:h-52 overflow-hidden flex items-center justify-center"
+           style="background:radial-gradient(120% 90% at 30% 10%,#1c2740,#0a0a12)">
+        <img src="images/char-render-cut.png" alt="Glass direction preview — premium 3D-plush banana mascot" loading="lazy" class="h-[112%] w-auto object-contain drop-shadow-[0_18px_30px_rgba(34,211,238,.25)]">
+        <span class="absolute top-3 left-3 font-pixel text-[8px] text-cyan bg-black/55 px-2 py-1 rounded">02</span>
+      </div>
+      <div class="p-5 sm:p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-pixel text-[13px] text-banana">GLASS&nbsp;BYTES</h3>
+          <span class="enter font-pixel text-[9px] text-cyan">ENTER&nbsp;▶</span>
+        </div>
+        <p class="mt-3 text-sm text-cream/70 leading-relaxed">Frosted, iridescent, premium. A glass card that tilts to your cursor with a live status + clock.</p>
+        <p class="mt-3 text-[11px] text-cream/40">Pro-Max · liquid glass</p>
+      </div>
+    </a>
+
+    <!-- 3D -->
+    <a href="direction-3d.html" class="tile reveal group block rounded-2xl border border-white/12 bg-black/30 overflow-hidden cursor-pointer" style="--ac:#FFD60A">
+      <div class="thumb relative h-44 sm:h-52 overflow-hidden flex items-center justify-center"
+           style="background:radial-gradient(120% 90% at 50% 30%,#171225,#060507)">
+        <img src="images/mascot-poster.jpg" alt="3D direction preview — the mascot as a spinnable 3D model" loading="lazy" class="h-[120%] w-auto object-contain">
+        <span class="absolute top-3 left-3 font-pixel text-[8px] text-cyan bg-black/55 px-2 py-1 rounded">03</span>
+        <span class="absolute bottom-3 right-3 text-[10px] font-mono text-banana/90 border border-banana/40 rounded-full px-2 py-0.5">3D · spin me</span>
+      </div>
+      <div class="p-5 sm:p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-pixel text-[13px] text-banana">BANANA / 3D</h3>
+          <span class="enter font-pixel text-[9px] text-banana">ENTER&nbsp;▶</span>
+        </div>
+        <p class="mt-3 text-sm text-cream/70 leading-relaxed">Dark spatial gallery. My 2D sprite turned into a real 3D model that spins as you scroll.</p>
+        <p class="mt-3 text-[11px] text-cream/40">Frontend-FX · 3D-on-scroll</p>
+      </div>
+    </a>
+
+    <!-- LIVING -->
+    <a href="direction-living.html" class="tile reveal group block rounded-2xl border border-white/12 bg-black/30 overflow-hidden cursor-pointer" style="--ac:#FF2E97">
+      <div class="thumb relative h-44 sm:h-52 overflow-hidden flex items-center justify-center"
+           style="background:radial-gradient(120% 90% at 50% 20%,#1a0840,#0B0327)">
+        <video src="images/mascot-portal.mp4" poster="images/mascot-poster.jpg" autoplay muted loop playsinline preload="metadata"
+               class="h-[118%] w-auto object-contain" aria-label="Living direction preview — the mascot animated"></video>
+        <span class="absolute top-3 left-3 font-pixel text-[8px] text-cyan bg-black/55 px-2 py-1 rounded">04</span>
+        <span class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 text-[10px] font-mono text-cream/80">
+          <span class="w-1.5 h-1.5 rounded-full bg-hotpink blink"></span>now&nbsp;live</span>
+      </div>
+      <div class="p-5 sm:p-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-pixel text-[13px] text-banana">LIVING&nbsp;SYNTH</h3>
+          <span class="enter font-pixel text-[9px] text-hotpink">ENTER&nbsp;▶</span>
+        </div>
+        <p class="mt-3 text-sm text-cream/70 leading-relaxed">Synthwave sunset, parallax depth, and the mascot alive in a glowing neon portal.</p>
+        <p class="mt-3 text-[11px] text-cream/40">Frontend-FX · living parallax</p>
+      </div>
+    </a>
+  </section>
+
+  <!-- quick connect -->
+  <section class="mt-12 sm:mt-14 text-center reveal">
+    <p class="font-pixel text-[9px] text-cream/45 tracking-widest mb-5">— OR JUST SAY HI —</p>
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <a href="mailto:zack@zballantine.com?subject=Let%27s%20build%20something"
+         class="min-h-[48px] inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-banana text-ink font-semibold cursor-pointer transition-colors hover:bg-[#ffe14d]">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+        Email me
+      </a>
+      <button type="button" onclick="saveContact()"
+         class="min-h-[48px] inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-cream/20 text-cream font-semibold cursor-pointer transition-colors hover:border-banana/70 hover:text-white">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFD60A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        Save my contact
+      </button>
+    </div>
+  </section>
+</main>
+
+<div style="text-align:center; padding:1.5rem 1rem; font-size:0.7rem; letter-spacing:0.05em; opacity:0.45;">
+  <a href="https://instagram.com/BananaCares" target="_blank" rel="noopener" style="text-decoration:none; color:inherit;">
+    Mockup created by Banana Bytes
+  </a>
+</div>
+
+<script>
+function saveContact(){
+  const v=["BEGIN:VCARD","VERSION:3.0","N:Ballantine;Zack;;;","FN:Zack Ballantine",
+  "ORG:Banana Bytes","TITLE:Founder / Web Designer","EMAIL;TYPE=INTERNET:zack@zballantine.com",
+  "URL:https://instagram.com/BananaCares","NOTE:Banana Bytes — I build websites in minutes. Met at the AI conference.",
+  "END:VCARD"].join("\r\n");
+  const b=new Blob([v],{type:"text/vcard"});const u=URL.createObjectURL(b);
+  const a=document.createElement("a");a.href=u;a.download="Zack-Ballantine.vcf";a.click();
+  setTimeout(()=>URL.revokeObjectURL(u),1500);
+}
+(function(){
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els=document.querySelectorAll('.reveal');
+  if(reduce||!('IntersectionObserver'in window)){ els.forEach(e=>e.classList.add('in')); return; }
+  const io=new IntersectionObserver((en)=>en.forEach(x=>{ if(x.isIntersecting){ x.target.classList.add('in'); io.unobserve(x.target);} }),{threshold:.12});
+  els.forEach((e,i)=>{ e.style.transitionDelay=(i*60)+'ms'; io.observe(e); });
+})();
+</script>
+</body>
+</html>
