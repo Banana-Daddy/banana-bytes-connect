@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Banana Bytes — Attendee Directory · PS/NExT Summit 26</title>
+<meta name="description" content="Swap cards and find your people at PS/NExT Summit 26. A synthwave attendee directory by Zack Ballantine of Banana Bytes. Your info stays on your device.">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Banana Bytes">
+<meta property="og:title" content="Attendee Directory — PS/NExT Summit 26 · Banana Bytes">
+<meta property="og:description" content="Swap cards and find your people at the summit. Built by Zack Ballantine — Banana Bytes.">
+<meta property="og:url" content="https://banana-daddy.github.io/banana-bytes-connect/directory.html">
+<meta property="og:image" content="https://banana-daddy.github.io/banana-bytes-connect/images/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#160A24">
+<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="apple-touch-icon" sizes="512x512" href="images/favicon-512.png">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<!-- self-hosted: works on flaky venue wifi, no CDN race -->
+<script src="qrcode.min.js"></script>
+<script>
+  tailwind.config = { theme: { extend: {
+    colors: { ink:'#160A24', deep:'#2A0E4F', hotpink:'#FF2E97', banana:'#FFD60A', cyan:'#22D3EE', cream:'#FFF7E6' },
+    fontFamily: { pixel:['"Press Start 2P"','monospace'], grotesk:['"Space Grotesk"','sans-serif'] }
+  } } }
+</script>
+<style>
+  :root{ color-scheme:dark; }
+  html,body{ background:#0E0720; }
+  body{ font-family:'Space Grotesk',sans-serif; color:#FFF7E6; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{ outline:2px solid #FFD60A; outline-offset:2px; border-radius:6px; }
+  .sr-only{ position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0; }
+
+  .bg-grid{ position:fixed; inset:0; z-index:-3; background:radial-gradient(120% 80% at 50% -10%, #3A1170 0%, #1B0A38 45%, #0E0720 100%); }
+  .bg-floor{ position:fixed; left:50%; bottom:-6vh; transform:translateX(-50%); z-index:-2; width:240vw; height:55vh;
+      background-image:linear-gradient(#22D3EE55 1px,transparent 1px),linear-gradient(90deg,#22D3EE55 1px,transparent 1px);
+      background-size:5vw 5vw; opacity:.5; -webkit-mask-image:linear-gradient(#000,transparent 78%); mask-image:linear-gradient(#000,transparent 78%);
+      transform-origin:50% 0; transform:translateX(-50%) perspective(40vh) rotateX(68deg); animation:floor 7s linear infinite; }
+  @keyframes floor{ to{ background-position:0 5vw; } }
+  .sun{ position:fixed; z-index:-2; left:50%; top:8vh; transform:translateX(-50%); width:min(62vw,420px); aspect-ratio:1; border-radius:50%;
+      background:radial-gradient(circle at 50% 40%, #FFD60A, #FF7AC6 55%, #B5179E 78%, transparent 80%); filter:blur(2px); opacity:.28; }
+  .scan{ position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.05;
+      background:repeating-linear-gradient(180deg,transparent 0 2px,rgba(0,0,0,.5) 2px 3px); }
+
+  .blink{ animation:blink 1.1s steps(1,end) infinite; } @keyframes blink{ 50%{ opacity:0; } }
+  .pixshadow{ text-shadow:3px 3px 0 #FF2E97,6px 6px 0 rgba(0,0,0,.35); }
+
+  .tile{ transition:transform .2s cubic-bezier(.2,.7,.2,1), box-shadow .2s ease, border-color .2s ease; }
+  .tile:hover,.tile:focus-within{ transform:translateY(-5px); border-color:var(--ac,#FF2E97); box-shadow:0 0 0 1px var(--ac,#FF2E97), 0 16px 44px -14px var(--ac,#FF2E97); }
+  .tile .enter{ opacity:0; transform:translateX(-4px); transition:.25s ease; }
+  .tile:hover .enter,.tile:focus-within .enter{ opacity:1; transform:none; }
+  .reveal{ opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:none; }
+
+  .chip{ transition:.15s ease; }
+  .chip[aria-pressed="true"]{ background:#FFD60A; color:#160A24; border-color:transparent; }
+  .field{ background:rgba(0,0,0,.4); border:1px solid rgba(255,255,255,.18); border-radius:10px; padding:11px 12px; color:#FFF7E6; width:100%; font-size:14px; }
+  .field::placeholder{ color:rgba(255,247,230,.55); }
+  .lab{ font-size:10px; letter-spacing:.08em; text-transform:uppercase; color:#22D3EE; font-weight:700; margin-bottom:4px; display:block; }
+  .btn{ min-height:46px; display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:0 18px; border-radius:12px; font-weight:700; cursor:pointer; transition:.15s ease; font-size:14px; }
+  .btn-banana{ background:#FFD60A; color:#160A24; } .btn-banana:hover{ background:#ffe14d; }
+  .btn-ghost{ border:1px solid rgba(255,247,230,.25); color:#FFF7E6; } .btn-ghost:hover{ border-color:rgba(255,214,10,.7); color:#fff; }
+  .btn-pink{ background:#FF2E97; color:#fff; } .btn-pink:hover{ filter:brightness(1.08); }
+  .xbtn{ width:44px; height:44px; margin:-8px -8px -8px 0; display:inline-flex; align-items:center; justify-content:center; font-size:26px; line-height:1; color:rgba(255,247,230,.7); flex:none; }
+  .xbtn:hover{ color:#fff; }
+
+  .modal{ position:fixed; inset:0; z-index:50; display:none; align-items:flex-start; justify-content:center; overflow-y:auto;
+      padding:18px max(18px,env(safe-area-inset-right)) max(18px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
+      background:rgba(6,3,15,.72); backdrop-filter:blur(8px); }
+  .modal.open{ display:flex; }
+  .sheet{ width:100%; max-width:560px; margin:max(env(safe-area-inset-top),24px) 0 max(40px,env(safe-area-inset-bottom)); background:linear-gradient(180deg,#1d0e36,#160a24);
+      border:1px solid rgba(255,255,255,.13); border-radius:18px; box-shadow:0 30px 80px -20px rgba(0,0,0,.8); }
+
+  .ribbon{ position:absolute; top:10px; right:-1px; font-family:'Press Start 2P',monospace; font-size:7px; letter-spacing:.06em;
+      background:#FFD60A; color:#160A24; padding:4px 8px; border-radius:6px 0 0 6px; }
+  @media (prefers-reduced-motion: reduce){ .bg-floor,.blink{ animation:none; } .reveal{ opacity:1!important; transform:none!important; transition:none; }
+    .tile{ transition:none; } .tile:hover,.tile:focus-within{ transform:none; } }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div><div class="sun"></div><div class="bg-floor"></div><div class="scan"></div>
+
+<!-- incoming shared card banner -->
+<div id="importBar" role="status" style="display:none" class="sticky top-0 z-40 bg-hotpink text-white text-center text-sm font-semibold px-4 py-3 shadow-lg"></div>
+
+<main id="main" class="max-w-6xl mx-auto pt-10 sm:pt-14 pb-20" style="padding-left:max(1.25rem,env(safe-area-inset-left));padding-right:max(1.25rem,env(safe-area-inset-right))">
+
+  <!-- header -->
+  <header class="text-center reveal">
+    <p class="font-pixel text-[10px] sm:text-xs text-cyan tracking-widest mb-4">BANANA&nbsp;BYTES&nbsp;·&nbsp;INSERT&nbsp;COIN</p>
+    <h1 class="font-pixel text-banana leading-[1.5] pixshadow break-words" style="font-size:clamp(15px,5.4vw,40px)">ATTENDEE<br class="xs:hidden">&nbsp;DIRECTORY</h1>
+    <p class="mt-6 max-w-xl mx-auto text-cream/80 text-sm sm:text-base leading-relaxed">
+      Swap cards, find your people. <span class="text-cream/90">PS/NExT&nbsp;Summit&nbsp;26.</span>
+      <span class="block mt-1 text-cream/60">Add your card → hand someone your QR → you're connected.</span>
+    </p>
+    <p class="font-pixel text-[9px] text-hotpink mt-5">▶ <span id="count">0</span> <span id="countNoun">PLAYERS</span> IN YOUR ROSTER</p>
+    <p class="mt-4 text-[11px] text-cream/65 max-w-md mx-auto leading-relaxed">
+      🔒 Your roster lives on <b class="text-cream/90">this device only</b>. Nothing is uploaded — cards are shared person-to-person by QR or link.
+    </p>
+  </header>
+
+  <!-- toolbar -->
+  <section class="mt-9 reveal" aria-label="Actions">
+    <div class="flex flex-wrap items-center justify-center gap-3">
+      <button class="btn btn-banana" onclick="openEdit('me')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+        Add my card
+      </button>
+      <button class="btn btn-pink" id="shareMineBtn" onclick="shareMine()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>
+        Share my QR
+      </button>
+      <button class="btn btn-ghost" onclick="openEdit()">+ Add someone</button>
+      <button class="btn btn-ghost" onclick="exportRoster()" title="Download your roster as a file">Export</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()" title="Merge a roster file">Import</button>
+      <input type="file" id="importFile" accept="application/json" class="hidden" onchange="importRoster(event)">
+    </div>
+
+    <div class="mt-6 max-w-2xl mx-auto">
+      <label for="search" class="sr-only">Search the directory</label>
+      <input id="search" type="search" class="field" placeholder="Search name, job, interest, specialty, location…" oninput="render()">
+      <div id="filters" role="group" aria-label="Filter by track" class="mt-3 flex flex-wrap gap-2 justify-center"></div>
+    </div>
+  </section>
+
+  <!-- directory grid -->
+  <h2 class="sr-only">Attendees</h2>
+  <p id="srstatus" class="sr-only" aria-live="polite"></p>
+  <section id="grid" class="mt-9 grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-label="Attendees"></section>
+
+  <!-- empty / no-match state -->
+  <div id="empty" class="mt-12 text-center" style="display:none">
+    <p id="emptyTitle" class="font-pixel text-banana text-sm pixshadow">NO&nbsp;PLAYERS&nbsp;YET</p>
+    <p id="emptyBody" class="mt-4 text-cream/70 text-sm">Be Player One — tap <b class="text-banana">Add my card</b>, then share your QR around the room.</p>
+  </div>
+</main>
+
+<footer class="text-center pb-10 px-4">
+  <p class="font-pixel text-[9px] text-cream/65 tracking-widest mb-2">— GG · THANKS FOR PLAYING —</p>
+  <p class="text-[12px] text-cream/75">Created by <a href="https://instagram.com/BananaCares" target="_blank" rel="noopener" class="text-banana hover:text-white font-semibold">Zack&nbsp;Ballantine</a> · Banana&nbsp;Bytes</p>
+  <p class="text-[10px] text-cream/55 mt-1">Drop a link, get a live site back in minutes. · <a href="index.html" class="underline hover:text-cream/80">More from Banana Bytes</a></p>
+</footer>
+
+<!-- ===== EDIT / ADD MODAL ===== -->
+<div class="modal" id="editModal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+  <div class="sheet p-5 sm:p-7">
+    <div class="flex items-center justify-between mb-1">
+      <h2 id="editTitle" class="font-pixel text-banana text-[13px]">YOUR&nbsp;CARD</h2>
+      <button class="xbtn" onclick="closeModal('editModal')" aria-label="Close">×</button>
+    </div>
+    <p class="text-[11px] text-cream/55 mb-5">Only your name is required. Share exactly what you want — everything else is optional.</p>
+    <form id="editForm" onsubmit="saveCard(event)" class="space-y-4">
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="lab" for="f_name">Name *</label><input id="f_name" data-af class="field" required placeholder="Your name"></div>
+        <div><label class="lab" for="f_track">At the summit</label>
+          <select id="f_track" class="field">
+            <option>Attendee</option><option>Vibe-a-thon</option><option>GenJam</option><option>Speaker</option>
+            <option>Host / Organizer</option><option>Business</option><option>Creative</option><option>Educator / Student</option>
+            <option>Sponsor</option><option>Press</option><option>Other</option>
+          </select></div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="lab" for="f_role">Current job / title</label><input id="f_role" class="field" placeholder="e.g. Director of Innovation"></div>
+        <div><label class="lab" for="f_org">Company / org</label><input id="f_org" class="field" placeholder="e.g. Banana Bytes"></div>
+      </div>
+      <div><label class="lab" for="f_location">Location</label><input id="f_location" class="field" placeholder="e.g. Palm Springs, CA"></div>
+      <div><label class="lab" for="f_interests">Interests <span class="text-cream/55 normal-case">(comma-separated — what you love talking about)</span></label>
+        <input id="f_interests" class="field" placeholder="AI, photography, tennis, local business"></div>
+      <div><label class="lab" for="f_specialties">Specialties / skills <span class="text-cream/55 normal-case">(comma-separated)</span></label>
+        <input id="f_specialties" class="field" placeholder="frontend, marketing, design, vibe-coding"></div>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="lab" for="f_looking">Looking for</label><input id="f_looking" class="field" placeholder="e.g. local clients, collaborators"></div>
+        <div><label class="lab" for="f_help">I can help with</label><input id="f_help" class="field" placeholder="e.g. shipping a site fast"></div>
+      </div>
+
+      <p class="font-pixel text-[9px] text-cyan tracking-widest pt-1">— CONTACT (share what you want) —</p>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="lab" for="f_email">Email</label><input id="f_email" type="email" class="field" placeholder="you@email.com"></div>
+        <div><label class="lab" for="f_phone">Phone</label><input id="f_phone" class="field" placeholder="optional"></div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-3">
+        <div><label class="lab" for="f_website">Website</label><input id="f_website" class="field" placeholder="yoursite.com"></div>
+        <div><label class="lab" for="f_linktree">Linktree / links</label><input id="f_linktree" class="field" placeholder="linktr.ee/you"></div>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div><label class="lab" for="f_instagram">Instagram</label><input id="f_instagram" class="field" placeholder="@handle"></div>
+        <div><label class="lab" for="f_github">GitHub</label><input id="f_github" class="field" placeholder="username"></div>
+        <div><label class="lab" for="f_linkedin">LinkedIn</label><input id="f_linkedin" class="field" placeholder="in/you"></div>
+        <div><label class="lab" for="f_x">X / Twitter</label><input id="f_x" class="field" placeholder="@handle"></div>
+      </div>
+      <div><label class="lab" for="f_bio">Anything else <span class="text-cream/55 normal-case">(a line about you)</span></label>
+        <textarea id="f_bio" class="field" rows="2" placeholder="What you're building, what brought you here…"></textarea></div>
+      <div>
+        <label class="lab" id="accentLab">Card color</label>
+        <div id="accentRow" role="radiogroup" aria-labelledby="accentLab" class="flex gap-2"></div>
+      </div>
+      <input type="hidden" id="f_id"><input type="hidden" id="f_accent" value="#FF2E97">
+      <div class="flex items-center gap-3 pt-2">
+        <button type="submit" class="btn btn-banana flex-1">Save card</button>
+        <button type="button" id="delBtn" class="btn btn-ghost" style="display:none" onclick="deleteCard()">Delete</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== DETAIL MODAL ===== -->
+<div class="modal" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailName">
+  <div class="sheet" id="detailSheet"></div>
+</div>
+
+<!-- ===== SHARE MODAL ===== -->
+<div class="modal" id="shareModal" role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+  <div class="sheet p-6 text-center">
+    <div class="flex items-center justify-between mb-3">
+      <h2 id="shareTitle" class="font-pixel text-banana text-[13px]">SCAN&nbsp;TO&nbsp;CONNECT</h2>
+      <button class="xbtn" onclick="closeModal('shareModal')" aria-label="Close">×</button>
+    </div>
+    <p class="text-[12px] text-cream/70 mb-4">Have them scan this with their camera — it adds your card to their roster.</p>
+    <div id="qrBox" class="mx-auto bg-white p-4 rounded-xl inline-block" style="min-width:200px;min-height:200px" aria-label="QR code linking to this card"></div>
+    <p id="qrName" class="font-pixel text-[10px] text-banana mt-4"></p>
+    <div class="flex flex-wrap gap-2 justify-center mt-5">
+      <button class="btn btn-banana" onclick="nativeShare()">Share link</button>
+      <button class="btn btn-ghost" onclick="copyLink()" id="copyBtn">Copy link</button>
+      <button class="btn btn-ghost" onclick="downloadVcard(window.__shareData)">Save .vcf</button>
+    </div>
+    <p id="shareLink" class="mt-4 text-[10px] text-cream/60 break-all px-2"></p>
+  </div>
+</div>
+
+<!-- toast -->
+<div id="toast" role="status" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-[60] px-4 py-3 rounded-xl bg-banana text-ink font-semibold text-sm shadow-lg" style="display:none"></div>
+
+<script>
+/* ---------- store ---------- */
+const KEY='bb_connect_roster_v1', MEKEY='bb_connect_me_v1';
+const ACCENTS=['#FF2E97','#22D3EE','#FFD60A','#7C5CFF','#46e08a','#ff7a3d'];
+const ACCENT_NAMES={'#FF2E97':'pink','#22D3EE':'cyan','#FFD60A':'banana','#7C5CFF':'purple','#46e08a':'green','#ff7a3d':'orange'};
+const $=s=>document.querySelector(s);
+const uid=()=>'p'+Math.random().toString(36).slice(2,9);
+let roster=load(), filter='All';
+
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY))||[]; }catch(e){ return []; } }
+function save(){ localStorage.setItem(KEY, JSON.stringify(roster)); }
+function meId(){ return localStorage.getItem(MEKEY)||''; }
+function safeAccent(c){ return (typeof c==='string' && /^#[0-9a-fA-F]{3,8}$/.test(c)) ? c : '#FF2E97'; }
+
+/* ---------- seed: Zack as the MAKER entry (credit), NOT the user's "me" card ---------- */
+function seed(){
+  if(load().length) return;
+  roster=[{ id:'zack-maker', creator:true, name:'Zack Ballantine',
+    role:'Solo dev / Web designer', org:'Banana Bytes', location:'Palm Springs, CA',
+    interests:['AI web design','vibe-coding','photography','tennis','local business'],
+    specialties:['frontend','design','marketing & innovation','AI-built sites'],
+    looking:'local businesses to build for + fellow builders', help:'getting you a live, high-end site fast',
+    email:'zack@zballantine.com', instagram:'BananaCares', github:'Banana-Daddy',
+    website:'bananabytes.squarespace.com/how-to-palm-springs', linktree:'linktr.ee/ServingBanana',
+    track:'Vibe-a-thon', bio:'Founder of Banana Bytes — drop a link, get a live site back in minutes. Competing in the Vibe-a-thon. I built this directory 🍌', accent:'#FFD60A' }];
+  save(); /* MEKEY intentionally unset — everyone (incl. Zack) adds their own card */
+}
+
+/* ---------- helpers ---------- */
+const esc=s=>(s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const vesc=s=>String(s==null?'':s).replace(/\r\n|\r|\n/g,'\\n').replace(/([,;\\])/g,'\\$1');
+const arr=s=>Array.isArray(s)?s.filter(Boolean):String(s||'').split(',').map(x=>x.trim()).filter(Boolean);
+const initials=n=>String(n||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase()||'?';
+function url(u){ u=String(u||'').trim(); if(!u) return ''; return /^https?:\/\//i.test(u)?u:'https://'+u; }
+function igUrl(h){ h=String(h||'').replace(/^@/,'').trim(); return h?'https://instagram.com/'+encodeURIComponent(h):''; }
+function xUrl(h){ h=String(h||'').replace(/^@/,'').trim(); return h?'https://x.com/'+encodeURIComponent(h):''; }
+function ghUrl(h){ h=String(h||'').replace(/^@/,'').trim(); return h?'https://github.com/'+encodeURIComponent(h):''; }
+function liUrl(h){ h=String(h||'').trim(); if(!h)return''; if(/^https?:\/\//i.test(h)||/(^|\.)linkedin\.com\//i.test(h)) return url(h); return 'https://linkedin.com/'+(h.startsWith('in/')?h:'in/'+h); }
+
+/* ---------- compact share payload (short keys + drop empties) ---------- */
+const K={name:'n',role:'r',org:'o',location:'l',interests:'i',specialties:'s',looking:'k',help:'h',email:'e',phone:'p',website:'w',linktree:'t',instagram:'g',github:'gh',linkedin:'li',x:'x',bio:'b',track:'c',accent:'a'};
+const KR=Object.fromEntries(Object.entries(K).map(([a,b])=>[b,a]));
+function slim(p){ const o={}; for(const key in K){ let v=p[key]; if(Array.isArray(v)) v=v.join(', '); if(v==null||v==='') continue; o[K[key]]=v; } return o; }
+function unslim(o){ if(!o||typeof o!=='object') return null; if('name'in o&&!('n'in o)) return o; const p={}; for(const sk in o){ const full=KR[sk]; if(!full) continue; let v=o[sk]; if(full==='interests'||full==='specialties') v=arr(v); p[full]=v; } return p; }
+function enc(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
+function dec(s){ s=String(s||'').replace(/-/g,'+').replace(/_/g,'/'); try{ return JSON.parse(decodeURIComponent(escape(atob(s)))); }catch(e){ return null; } }
+function cardLink(p){ return location.origin+location.pathname+'#p='+enc(slim(p)); }
+
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.style.display='block'; clearTimeout(t._t); t._t=setTimeout(()=>t.style.display='none',2400); }
+
+/* ---------- filters ---------- */
+const TRACKS=['All','Vibe-a-thon','GenJam','Speaker','Host / Organizer','Business','Creative','Attendee','Educator / Student','Sponsor','Press','Other'];
+function renderFilters(){
+  const present=new Set(roster.map(p=>p.track).filter(Boolean));
+  if(filter!=='All' && !present.has(filter)) filter='All';
+  const host=$('#filters'); host.innerHTML='';
+  TRACKS.filter(t=>t==='All'||present.has(t)).forEach(t=>{
+    const b=document.createElement('button');
+    b.className='chip text-[12px] font-semibold px-3.5 py-2 min-h-[40px] inline-flex items-center rounded-full border border-white/20 text-cream/75';
+    b.textContent=t; b.setAttribute('aria-pressed', String(filter===t));
+    b.onclick=()=>{ filter=t; renderFilters(); render(); };
+    host.appendChild(b);
+  });
+}
+
+/* ---------- render grid ---------- */
+function render(){
+  const q=($('#search').value||'').toLowerCase().trim();
+  const list=roster.filter(p=>{
+    if(filter!=='All' && p.track!==filter) return false;
+    if(!q) return true;
+    return [p.name,p.role,p.org,p.location,p.bio,arr(p.interests).join(' '),arr(p.specialties).join(' '),p.looking,p.help].join(' ').toLowerCase().includes(q);
+  });
+  $('#count').textContent=roster.length;
+  $('#countNoun').textContent=roster.length===1?'PLAYER':'PLAYERS';
+  const grid=$('#grid'); grid.innerHTML='';
+  // empty / no-match states
+  const emp=$('#empty');
+  if(!roster.length){ emp.style.display='block'; $('#emptyTitle').innerHTML='NO&nbsp;PLAYERS&nbsp;YET'; $('#emptyBody').innerHTML='Be Player One — tap <b class="text-banana">Add my card</b>, then share your QR around the room.'; }
+  else if(!list.length){ emp.style.display='block'; $('#emptyTitle').innerHTML='NO&nbsp;MATCHES'; $('#emptyBody').textContent='Nobody matches that search/filter yet.'; }
+  else emp.style.display='none';
+  $('#srstatus').textContent = roster.length ? (list.length+' of '+roster.length+' attendees shown') : '';
+
+  list.forEach(p=>{
+    const ac=safeAccent(p.accent);
+    const card=document.createElement('article');
+    card.className='tile reveal in rounded-2xl border border-white/12 bg-black/30 p-5 cursor-pointer relative overflow-hidden';
+    card.style.setProperty('--ac',ac);
+    card.tabIndex=0; card.setAttribute('role','button'); card.setAttribute('aria-label','View '+p.name);
+    card.onclick=()=>openDetail(p.id); card.onkeydown=e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();openDetail(p.id);} };
+    card.innerHTML=`
+      ${p.creator?'<span class="ribbon">★ MAKER</span>':''}
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center font-pixel text-[12px] shrink-0" style="background:${ac}22;border:1px solid ${ac}66;color:${ac}">${esc(initials(p.name))}</div>
+        <div class="min-w-0">
+          <h3 class="font-semibold text-cream leading-tight truncate">${esc(p.name)}</h3>
+          <p class="text-[12px] text-cream/65 truncate">${esc([p.role,p.org].filter(Boolean).join(' · ')||p.track||'Attendee')}</p>
+        </div>
+      </div>
+      ${p.location?`<p class="mt-3 text-[12px] text-cream/55 flex items-center gap-1.5"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>${esc(p.location)}</p>`:''}
+      ${arr(p.interests).length?`<div class="mt-3 flex flex-wrap gap-1.5">${arr(p.interests).slice(0,4).map(t=>`<span class="text-[10px] px-2 py-0.5 rounded-full" style="background:${ac}1f;color:${ac}">${esc(t)}</span>`).join('')}</div>`:''}
+      <div class="mt-4 flex items-center justify-between">
+        <span class="font-pixel text-[8px] text-cream/55">${esc(p.track||'')}</span>
+        <span class="enter font-pixel text-[8px]" style="color:${ac}">VIEW ▶</span>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ---------- detail ---------- */
+function socialRow(p){
+  const links=[
+    ['Email', p.email?'mailto:'+encodeURIComponent(p.email):'', '✉'],
+    ['Website', url(p.website), '🌐'],
+    ['Instagram', igUrl(p.instagram), '◎'],
+    ['GitHub', ghUrl(p.github), '⌥'],
+    ['LinkedIn', liUrl(p.linkedin), 'in'],
+    ['X', xUrl(p.x), '𝕏'],
+    ['Linktree', url(p.linktree), '🌲'],
+    ['Phone', p.phone?'tel:'+String(p.phone).replace(/[^+\d]/g,''):'', '☎'],
+  ].filter(l=>l[1]);
+  if(!links.length) return '';
+  return `<div class="flex flex-wrap gap-2 mt-4">${links.map(l=>`<a href="${esc(l[1])}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[12px] px-3 py-2 rounded-lg border border-white/15 text-cream/85 hover:border-banana/70 hover:text-white transition-colors"><span aria-hidden="true">${l[2]}</span>${l[0]}</a>`).join('')}</div>`;
+}
+function openDetail(id){
+  const p=roster.find(x=>x.id===id); if(!p) return;
+  const ac=safeAccent(p.accent);
+  $('#detailSheet').innerHTML=`
+    <div class="p-6 sm:p-7" style="border-top:3px solid ${ac};border-radius:18px 18px 0 0">
+      <div class="flex items-start justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-14 h-14 rounded-xl flex items-center justify-center font-pixel text-sm" style="background:${ac}22;border:1px solid ${ac}66;color:${ac}">${esc(initials(p.name))}</div>
+          <div>
+            <h2 id="detailName" class="text-xl font-bold text-cream leading-tight">${esc(p.name)} ${p.creator?'<span class="font-pixel text-[8px] text-banana align-middle">★ MAKER</span>':''}</h2>
+            <p class="text-[13px] text-cream/65">${esc([p.role,p.org].filter(Boolean).join(' · ')||p.track||'')}</p>
+          </div>
+        </div>
+        <button class="xbtn" onclick="closeModal('detailModal')" aria-label="Close">×</button>
+      </div>
+      ${p.location?`<p class="mt-3 text-[13px] text-cream/65">📍 ${esc(p.location)} · <span class="text-cream/55">${esc(p.track||'')}</span></p>`:`<p class="mt-3 text-[12px] text-cream/55">${esc(p.track||'')}</p>`}
+      ${p.bio?`<p class="mt-4 text-[14px] text-cream/90 leading-relaxed">${esc(p.bio)}</p>`:''}
+      ${arr(p.interests).length?`<div class="mt-4"><p class="lab">Interests</p><div class="flex flex-wrap gap-1.5">${arr(p.interests).map(t=>`<span class="text-[11px] px-2.5 py-1 rounded-full" style="background:${ac}1f;color:${ac}">${esc(t)}</span>`).join('')}</div></div>`:''}
+      ${arr(p.specialties).length?`<div class="mt-3"><p class="lab">Specialties</p><div class="flex flex-wrap gap-1.5">${arr(p.specialties).map(t=>`<span class="text-[11px] px-2.5 py-1 rounded-full border border-white/15 text-cream/80">${esc(t)}</span>`).join('')}</div></div>`:''}
+      ${(p.looking||p.help)?`<div class="mt-4 grid sm:grid-cols-2 gap-3">
+        ${p.looking?`<div class="rounded-xl border border-white/12 p-3"><p class="lab" style="color:#FFD60A">Looking for</p><p class="text-[13px] text-cream/85">${esc(p.looking)}</p></div>`:''}
+        ${p.help?`<div class="rounded-xl border border-white/12 p-3"><p class="lab" style="color:#22D3EE">Can help with</p><p class="text-[13px] text-cream/85">${esc(p.help)}</p></div>`:''}
+      </div>`:''}
+      ${socialRow(p)}
+      <div class="flex flex-wrap gap-2 mt-6 pt-5 border-t border-white/10">
+        <button class="btn btn-banana flex-1" onclick="downloadVcard(roster.find(x=>x.id===${JSON.stringify(p.id)}))">Save contact (.vcf)</button>
+        <button class="btn btn-ghost" onclick="openShare(roster.find(x=>x.id===${JSON.stringify(p.id)}))">Share</button>
+        <button class="btn btn-ghost" onclick="openEdit(${JSON.stringify(p.id)})">Edit</button>
+      </div>
+    </div>`;
+  openModal('detailModal');
+}
+
+/* ---------- edit / add ---------- */
+function openEdit(id){
+  const f=$('#editForm'); f.reset();
+  let p=null, isMe=false;
+  if(id==='me'){ const mid=meId(); p=mid?roster.find(x=>x.id===mid):null; isMe=true; }
+  else if(id){ p=roster.find(x=>x.id===id); isMe=(id===meId()); }
+  $('#editTitle').textContent = p?(isMe?'YOUR CARD':'EDIT CARD') : (id==='me'?'YOUR CARD':'ADD SOMEONE');
+  $('#f_id').value=p?p.id:'';
+  $('#delBtn').style.display = (p && !p.creator) ? 'inline-flex' : 'none';
+  const g=(k,d='')=>p?(p[k]!=null?(Array.isArray(p[k])?p[k].join(', '):p[k]):d):d;
+  $('#f_name').value=g('name'); $('#f_role').value=g('role'); $('#f_org').value=g('org');
+  $('#f_location').value=g('location'); $('#f_track').value=g('track','Attendee')||'Attendee';
+  $('#f_interests').value=g('interests'); $('#f_specialties').value=g('specialties');
+  $('#f_looking').value=g('looking'); $('#f_help').value=g('help');
+  $('#f_email').value=g('email'); $('#f_phone').value=g('phone'); $('#f_website').value=g('website'); $('#f_linktree').value=g('linktree');
+  $('#f_instagram').value=g('instagram'); $('#f_github').value=g('github'); $('#f_linkedin').value=g('linkedin'); $('#f_x').value=g('x');
+  $('#f_bio').value=g('bio');
+  setAccent(safeAccent(p&&p.accent?p.accent:(id==='me'?'#FFD60A':'#FF2E97')));
+  f.dataset.markMe = (id==='me'||isMe)?'1':'';
+  openModal('editModal');
+}
+function setAccent(c){ $('#f_accent').value=c; document.querySelectorAll('#accentRow button').forEach(b=>{ const on=b.dataset.c===c; b.style.outline=on?'3px solid #fff':'none'; b.setAttribute('aria-checked',String(on)); }); }
+function buildAccentRow(){
+  const row=$('#accentRow'); row.innerHTML='';
+  ACCENTS.forEach(c=>{ const b=document.createElement('button'); b.type='button'; b.dataset.c=c; b.setAttribute('role','radio'); b.setAttribute('aria-checked','false');
+    b.className='w-9 h-9 rounded-full'; b.style.background=c; b.setAttribute('aria-label','Card color '+(ACCENT_NAMES[c]||c));
+    b.onclick=()=>setAccent(c); row.appendChild(b); });
+}
+function saveCard(e){
+  e.preventDefault();
+  const id=$('#f_id').value;
+  const data={
+    name:$('#f_name').value.trim(), role:$('#f_role').value.trim(), org:$('#f_org').value.trim(),
+    location:$('#f_location').value.trim(), track:$('#f_track').value,
+    interests:arr($('#f_interests').value), specialties:arr($('#f_specialties').value),
+    looking:$('#f_looking').value.trim(), help:$('#f_help').value.trim(),
+    email:$('#f_email').value.trim(), phone:$('#f_phone').value.trim(),
+    website:$('#f_website').value.trim(), linktree:$('#f_linktree').value.trim(),
+    instagram:$('#f_instagram').value.trim(), github:$('#f_github').value.trim(),
+    linkedin:$('#f_linkedin').value.trim(), x:$('#f_x').value.trim(),
+    bio:$('#f_bio').value.trim(), accent:safeAccent($('#f_accent').value)
+  };
+  if(!data.name){ toast('Add a name first'); return; }
+  let savedId;
+  if(id){ const i=roster.findIndex(x=>x.id===id); const creator=roster[i].creator; roster[i]={...roster[i],...data,creator}; savedId=id; }
+  else { savedId=uid(); roster.unshift({id:savedId,...data}); }
+  if($('#editForm').dataset.markMe==='1'){ localStorage.setItem(MEKEY,savedId); }
+  save(); renderFilters(); render(); closeModal('editModal');
+  if($('#detailModal').classList.contains('open')) openDetail(savedId);
+  toast(id?'Card updated ✓':'Card added ✓');
+}
+function deleteCard(){
+  const id=$('#f_id').value; if(!id) return;
+  if(!confirm('Remove this card from your roster?')) return;
+  roster=roster.filter(x=>x.id!==id);
+  if(id===meId()) localStorage.removeItem(MEKEY);
+  save(); renderFilters(); render(); closeModal('editModal');
+  if($('#detailModal').classList.contains('open')) closeModal('detailModal');
+  toast('Removed');
+}
+
+/* ---------- share / QR / vcard ---------- */
+function openShare(p){
+  if(!p) return;
+  window.__shareData=p;
+  const link=cardLink(p);
+  $('#shareLink').textContent=link; $('#qrName').textContent=p.name;
+  const box=$('#qrBox'); box.innerHTML='';
+  const size=Math.min(280, Math.max(208, (window.innerWidth||360)-110));
+  box.style.width=size+'px'; box.style.minWidth='0'; box.style.minHeight='0';
+  if(window.QRCode){
+    try{ new QRCode(box,{text:link,width:size,height:size,colorDark:'#160A24',colorLight:'#ffffff',correctLevel: link.length>300?QRCode.CorrectLevel.L:QRCode.CorrectLevel.M}); }
+    catch(err){ box.innerHTML='<p class="text-ink text-[12px] p-6 font-semibold">This card has a lot of detail — use “Copy link” or “Share link” below to send it.</p>'; }
+  } else { box.innerHTML='<p class="text-ink text-[12px] p-6 font-semibold">QR couldn’t load — use “Copy link” or “Share link” below.</p>'; }
+  openModal('shareModal');
+}
+function shareMine(){ const p=roster.find(x=>x.id===meId()); if(p){ openShare(p); } else { toast('Add your card first to share it'); openEdit('me'); } }
+function nativeShare(){
+  const p=window.__shareData; const link=cardLink(p);
+  if(navigator.share){ navigator.share({title:p.name+' — PS/NExT 26',text:'Add my card to your Banana Bytes roster',url:link}).catch(()=>{}); }
+  else copyLink();
+}
+function copyLink(){
+  const link=cardLink(window.__shareData);
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(link).then(()=>toast('Link copied ✓'),()=>fallbackCopy(link)); }
+  else fallbackCopy(link);
+}
+function fallbackCopy(t){ const a=document.createElement('textarea'); a.value=t; a.style.position='fixed'; a.style.opacity='0'; document.body.appendChild(a); a.select(); try{document.execCommand('copy');toast('Link copied ✓');}catch(e){toast('Copy failed — long-press the link');} a.remove(); }
+function downloadVcard(p){
+  if(!p) return;
+  const L=['BEGIN:VCARD','VERSION:3.0','FN:'+vesc(p.name)];
+  const parts=String(p.name||'').trim().split(/\s+/); L.push('N:'+vesc(parts.slice(1).join(' '))+';'+vesc(parts[0]||'')+';;;');
+  if(p.org) L.push('ORG:'+vesc(p.org));
+  if(p.role) L.push('TITLE:'+vesc(p.role));
+  if(p.email) L.push('EMAIL;TYPE=INTERNET:'+vesc(p.email));
+  if(p.phone) L.push('TEL;TYPE=CELL:'+vesc(p.phone));
+  if(p.website) L.push('URL:'+vesc(url(p.website)));
+  if(p.instagram) L.push('X-SOCIALPROFILE;TYPE=instagram:'+vesc(igUrl(p.instagram)));
+  if(p.github) L.push('X-SOCIALPROFILE;TYPE=github:'+vesc(ghUrl(p.github)));
+  const note=[p.bio, p.location?('📍'+p.location):'', 'Met at PS/NExT Summit 26'].filter(Boolean).join(' — ');
+  L.push('NOTE:'+vesc(note)); L.push('END:VCARD');
+  const b=new Blob([L.join('\r\n')],{type:'text/vcard'}); const u=URL.createObjectURL(b);
+  const a=document.createElement('a'); a.href=u; a.download=(String(p.name||'card').replace(/[^\w-]+/g,'-'))+'.vcf'; a.click(); setTimeout(()=>URL.revokeObjectURL(u),1500);
+}
+
+/* ---------- export / import ---------- */
+function exportRoster(){
+  const b=new Blob([JSON.stringify(roster,null,2)],{type:'application/json'}); const u=URL.createObjectURL(b);
+  const a=document.createElement('a'); a.href=u; a.download='banana-bytes-roster.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(u),1500);
+  toast('Roster exported');
+}
+function isDupe(p){
+  if(p.id && roster.some(x=>x.id===p.id)) return true;
+  return roster.some(x=> x.name===p.name && (
+    (x.email&&x.email===p.email) || (x.instagram&&x.instagram===p.instagram) || (x.phone&&x.phone===p.phone)
+  ));
+}
+function importRoster(e){
+  const file=e.target.files[0]; if(!file) return;
+  const r=new FileReader();
+  r.onload=()=>{ try{
+    const data=JSON.parse(r.result); if(!Array.isArray(data)) throw 0;
+    let added=0; data.forEach(p=>{ if(!p||typeof p.name!=='string'||!p.name.trim()) return;
+      p.accent=safeAccent(p.accent);
+      if(isDupe(p)) return;
+      roster.push({...p, id:p.id||uid()}); added++; });
+    save(); renderFilters(); render(); toast(added+' card'+(added===1?'':'s')+' merged');
+  }catch(err){ toast('Could not read that file'); } e.target.value=''; };
+  r.readAsText(file);
+}
+
+/* ---------- incoming shared card (#p=) ---------- */
+function checkIncoming(){
+  const m=location.hash.match(/p=([^&]+)/); if(!m) return;
+  let p=unslim(dec(m[1]));
+  if(!p||typeof p.name!=='string'||!p.name.trim()){ history.replaceState(null,'',location.pathname); toast("Couldn't read that card link"); return; }
+  history.replaceState(null,'',location.pathname);
+  p.accent=safeAccent(p.accent);
+  const bar=$('#importBar'); bar.style.display='block';
+  if(isDupe(p)){ bar.innerHTML=`📇 <b>${esc(p.name)}</b> is already in your roster. <button class="underline opacity-90 inline-block py-2 px-1 ml-2" onclick="this.parentElement.style.display='none'">dismiss</button>`; return; }
+  bar.innerHTML=`📇 <b>${esc(p.name)}</b> shared their card. <button class="underline font-bold inline-block py-2 px-1" id="addInc">Add to roster ▶</button> <button class="underline opacity-90 inline-block py-2 px-1 ml-4" onclick="this.parentElement.style.display='none'">dismiss</button>`;
+  $('#addInc').onclick=function(){ this.disabled=true; if(isDupe(p)){ bar.style.display='none'; return; } const np={...p,id:uid(),creator:false}; roster.unshift(np); save(); renderFilters(); render(); bar.style.display='none'; toast(p.name+' added ✓'); openDetail(np.id); };
+}
+
+/* ---------- modal plumbing + focus trap ---------- */
+let lastFocus=null;
+function focusables(m){ return [...m.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')].filter(el=>el.offsetParent!==null); }
+function openModal(id){
+  const m=$('#'+id); lastFocus=document.activeElement;
+  m.classList.add('open'); document.body.style.overflow='hidden';
+  setTimeout(()=>{ const af=m.querySelector('[data-af]'); const list=focusables(m); (af||list[0]||m).focus&&(af||list[0]||m).focus(); },30);
+  m._trap=e=>{ if(e.key!=='Tab') return; const list=focusables(m); if(!list.length) return; const first=list[0],last=list[list.length-1];
+    if(e.shiftKey&&document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey&&document.activeElement===last){ e.preventDefault(); first.focus(); } };
+  m.addEventListener('keydown',m._trap);
+}
+function closeModal(id){ const m=$('#'+id); m.classList.remove('open'); document.body.style.overflow='';
+  if(m._trap){ m.removeEventListener('keydown',m._trap); m._trap=null; }
+  if(lastFocus&&lastFocus.focus){ try{lastFocus.focus();}catch(e){} } }
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{ if(e.target===m) closeModal(m.id); }));
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') document.querySelectorAll('.modal.open').forEach(m=>closeModal(m.id)); });
+
+/* ---------- boot ---------- */
+seed(); buildAccentRow(); renderFilters(); render(); checkIncoming();
+document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+</script>
+</body>
+</html>
